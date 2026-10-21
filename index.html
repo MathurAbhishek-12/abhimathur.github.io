@@ -1,148 +1,507 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Massively by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Abhishek Mathur: business systems, Workday and analytics portfolio."><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Abhishek Mathur Portfolio</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"><style id="css">
+/* Layout: sticky left rail styled as a transit route line (stations = sections), evidence-first main column */
+:root{
+  --paper:#F4F6F7; --surface:#FFFFFF; --ink:#13202A; --muted:#566573; --rule:#D3DADF;
+  --line:#0E6B80; --line-soft:#E1EEF1; --signal:#B57F00; --signal-bg:#FFF1C7;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0E151A; --surface:#152028; --ink:#E5ECEF; --muted:#9AAAB5; --rule:#283844;
+  --line:#4DB8CC; --line-soft:#16313A; --signal:#F2C14E; --signal-bg:#3A2E0E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E151A; --surface:#152028; --ink:#E5ECEF; --muted:#9AAAB5; --rule:#283844;
+  --line:#4DB8CC; --line-soft:#16313A; --signal:#F2C14E; --signal-bg:#3A2E0E; color-scheme:dark}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font:17px/1.6 var(--body)}
+.wrap{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;
+  padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));padding-block:56px 120px}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 40px);align-self:start;display:flex;flex-direction:column;gap:22px}
+.kicker{font:500 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--line);margin:0}
+h1{font:800 46px/0.98 var(--display);font-stretch:72%;letter-spacing:-.01em;margin:0;text-wrap:balance}
+.role{margin:0;font-weight:600;line-height:1.35}
+.org{margin:0;color:var(--muted);font-size:15px;line-height:1.4}
+.contacts{display:flex;flex-direction:column;gap:8px;font-size:14px}
+.contact{display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px;align-items:baseline}
+.contact .lbl{font:500 10.5px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.contact .val{overflow-wrap:anywhere;user-select:text}
+.route{list-style:none;margin:6px 0 0;padding:0;position:relative;display:flex;flex-direction:column}
+.route::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:4px;border-radius:2px;background:var(--line)}
+.route a{position:relative;display:block;padding:6px 0 6px 32px;color:var(--muted);text-decoration:none;font-size:15px;line-height:1.3}
+.route a::before{content:"";position:absolute;left:2px;top:50%;width:10px;height:10px;margin-top:-7px;border-radius:50%;background:var(--surface);border:2px solid var(--line)}
+.route a:hover,.route a.on{color:var(--ink)}
+.route a.on::before{background:var(--line);box-shadow:0 0 0 4px var(--line-soft)}
+.route a:focus-visible{outline:2px solid var(--line);outline-offset:2px;border-radius:4px}
+main{min-width:0;display:flex;flex-direction:column;gap:72px}
+section{scroll-margin-top:32px;display:flex;flex-direction:column;gap:22px;min-width:0}
+h2{font:700 30px/1.1 var(--display);font-stretch:85%;margin:0;padding-bottom:12px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+h2 small{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-stretch:100%}
+h3{font:700 22px/1.2 var(--display);font-stretch:90%;margin:0;text-wrap:balance}
+h4{font:600 18px/1.3 var(--body);margin:0}
+.lead{font:600 34px/1.15 var(--display);font-stretch:88%;margin:0;max-width:22ch;text-wrap:balance}
+.prose{margin:0;max-width:65ch;white-space:pre-line}
+.sub{font:500 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:8px 0 0}
+.entries{display:flex;flex-direction:column}
+.entry{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;padding:16px 0;border-top:1px solid var(--rule)}
+.entry:first-child{border-top:0}
+.when{font:400 13px/1.6 var(--mono);color:var(--muted);margin:2px 0 0;font-variant-numeric:tabular-nums}
+.entry-body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.place{margin:0;color:var(--line);font-weight:600;font-size:15px}
+.note{margin:4px 0 0;color:var(--muted);max-width:65ch;white-space:pre-line}
+.skills{display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:6px;background:var(--surface);overflow:hidden}
+.skills-head,.skill{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:24px;padding:12px 18px}
+.skills-head{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--line-soft)}
+.skill{border-top:1px solid var(--rule)}
+.skill p{margin:0}
+.skill .s{font-weight:600}
+.skill .e{color:var(--muted)}
+.cases{display:flex;flex-direction:column;gap:28px}
+.case{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:26px 28px;display:flex;flex-direction:column;gap:20px}
+.case-head{display:flex;flex-direction:column;gap:6px}
+.tag{font:500 11.5px/1.4 var(--mono);letter-spacing:.06em;color:var(--line);margin:0}
+.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 32px}
+.cell{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cell p{margin:0;white-space:pre-line}
+.cell-lbl{font:500 10.5px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.cell.result .cell-lbl{color:var(--line)}
+.recs{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.rec{margin:0;padding:4px 0 4px 20px;border-left:3px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.rec p{margin:0;font-style:italic;white-space:pre-line}
+a.more{align-self:flex-start;margin-top:8px;color:var(--line);font-weight:600;font-size:14px;text-decoration:none}
+a.more:hover{text-decoration:underline}
+a.val{color:var(--line);text-decoration:none}
+a.val:hover{text-decoration:underline}
+.linkrow{display:flex;gap:10px;align-items:baseline;margin:8px 0 0;font-size:14px}
+.rec .who{font-style:normal;font-size:14px;color:var(--muted)}
+footer{font:400 12px/1.5 var(--mono);color:var(--muted);border-top:1px solid var(--rule);padding-top:18px}
+mark.ph{background:var(--signal-bg);color:var(--ink);border-bottom:1.5px dashed var(--signal);padding:0 2px;border-radius:2px}
+mark.ph.hit{outline:2px solid var(--signal);outline-offset:2px}
+/* edit mode */
+.ed{outline:1px dashed var(--rule);outline-offset:3px;border-radius:2px;min-height:1.2em;cursor:text}
+.ed:hover{outline-color:var(--line)}
+.ed:focus{outline:2px solid var(--line);background:var(--line-soft)}
+.ed:empty::before{content:"Click to type";color:var(--muted);font-style:italic;font-weight:400}
+.listwrap{display:flex;flex-direction:column;gap:10px}
+.item-wrap{position:relative}
+button{font:600 13px/1 var(--body);cursor:pointer;border-radius:5px}
+button:focus-visible{outline:2px solid var(--line);outline-offset:2px}
+.rm{align-self:start;justify-self:start;background:transparent;border:1px solid var(--rule);color:var(--muted);padding:6px 10px;margin-top:8px}
+.rm:hover{color:var(--ink);border-color:var(--ink)}
+.add{align-self:flex-start;background:transparent;border:1.5px dashed var(--line);color:var(--line);padding:9px 14px}
+.add:hover{background:var(--line-soft)}
+.bar{position:fixed;right:max(20px,calc(env(safe-area-inset-right,0px) + 12px));bottom:calc(env(safe-area-inset-bottom,0px) + 20px);z-index:20;
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:8px;box-shadow:0 8px 28px rgba(10,25,35,.18);max-width:calc(100vw - 40px)}
+.bar .status{font-size:13px;color:var(--muted);padding:0 6px;max-width:260px}
+.btn{border:1px solid var(--rule);background:var(--surface);color:var(--ink);padding:9px 14px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--line);border-color:var(--line);color:var(--surface)}
+.btn.primary:disabled{opacity:.5;cursor:default}
+.btn.count{background:var(--signal-bg);border-color:var(--signal);font-variant-numeric:tabular-nums}
+@media (max-width:860px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 140px}
+  .side{position:static}
+  .route{flex-direction:row;flex-wrap:wrap;gap:6px}
+  .route::before{display:none}
+  .route a{padding:6px 12px;border:1px solid var(--rule);border-radius:999px;font-size:14px}
+  .route a::before{display:none}
+  .route a.on{border-color:var(--line)}
+  h1{font-size:40px}
+  .lead{font-size:27px}
+  .entry{grid-template-columns:minmax(0,1fr);gap:4px}
+  .case{padding:20px}
+  .case-grid,.recs{grid-template-columns:minmax(0,1fr)}
+  .skills-head{display:none}
+  .skill{grid-template-columns:minmax(0,1fr);gap:4px}
+}
+</style><div id="root"></div><script type="application/json" id="state">{
+ "updated": "2026-10-20",
+ "profile": {
+  "kicker": "Business systems · Workday · Analytics",
+  "name": "Abhishek Mathur",
+  "role": "Business Systems Programs Manager",
+  "org": "Santa Cruz Metropolitan Transit District (Santa Cruz METRO)",
+  "contacts": [
+   {
+    "label": "Email",
+    "value": "mathurabhishek12@gmail.com"
+   },
+   {
+    "label": "LinkedIn",
+    "value": "https://www.linkedin.com/in/mathur-abhi/"
+   },
+   {
+    "label": "GitHub",
+    "value": "https://github.com/MathurAbhishek-12"
+   },
+   {
+    "label": "Tableau",
+    "value": "[Tableau Public profile link]"
+   },
+   {
+    "label": "Based in",
+    "value": "Santa Cruz, California"
+   }
+  ]
+ },
+ "about": {
+  "headline": "I turn Workday data and integrations into systems leaders can trust.",
+  "intro": "I work where enterprise software, data and operations meet. At Santa Cruz METRO I lead Workday across HCM, Finance, Payroll, Benefits and Procurement: integrations with outside agencies and vendors, governed reporting in Prism Analytics and Tableau, security, and twice-yearly releases.\nBefore METRO I supported Workday operations at Northeastern University, where I migrated more than 15,000 student employment records and rolled out Time Tracking and Absence to over 5,000 users. Roles in supply chain at Aspen Aerogels and in data engineering in Jodhpur, India, shaped how I think about processes and data pipelines. I hold an MS in Engineering Management from Northeastern University and am pursuing a Doctor of Business Administration in IT Management at Westcliff University.",
+  "goals": "My goal is to lead technology programs that are measurable, well documented and built around the people who use them. [Add one sentence on where you want your career to go in the next 3 to 5 years.]"
+ },
+ "education": [
+  {
+   "when": "In progress",
+   "title": "Doctor of Business Administration, IT Management",
+   "place": "Westcliff University",
+   "note": "Research interest: financial stress and persistence among online doctoral students."
+  },
+  {
+   "when": "Dec 2023",
+   "title": "MS, Engineering Management",
+   "place": "Northeastern University",
+   "note": "GPA 3.8 / 4.0. [Two or three courses most relevant to your target roles]"
+  },
+  {
+   "when": "May 2020",
+   "title": "B.Tech, Electronics and Communication Engineering",
+   "place": "Guru Gobind Singh Indraprastha University (GGSIPU), India",
+   "note": ""
+  }
+ ],
+ "experience": [
+  {
+   "when": "Sep 2024 to present",
+   "title": "Business Systems Programs Manager",
+   "place": "Santa Cruz Metropolitan Transit District · Santa Cruz, CA",
+   "note": "Lead Workday across HCM, Finance, Payroll, Benefits and Procurement. Built Prism Analytics pipelines and 100+ governed reports and Tableau dashboards that cut ad-hoc data requests by about 35%. Run integrations with 6+ outside platforms (CalPERS, Positive Pay, tax agencies, benefits providers) with zero payroll defects across 26 biweekly cycles. Lead twice-yearly Workday releases and the security model, and mentor 2 analysts."
+  },
+  {
+   "when": "Aug 2023 to Sep 2024",
+   "title": "Workday Operations Assistant",
+   "place": "Northeastern University · Boston, MA",
+   "note": "Migrated 15,000+ student employment records from JobX to Workday at 99.9% accuracy, cutting payroll processing time by 30%. Implemented Time Tracking and Absence for 5,000+ users and led 3 Studio and EIB integration projects, reducing timesheet errors by 40%. Built 20+ Tableau dashboards and Prism reports with People Analytics."
+  },
+  {
+   "when": "Summer 2023",
+   "title": "Data Engineer Intern",
+   "place": "AAIT Jodhpur · Jodhpur, India",
+   "note": "[Add from LinkedIn: the pipelines or tools you built, the technologies used, and one measurable outcome.]"
+  },
+  {
+   "when": "Sep 2022 to Dec 2022",
+   "title": "Supply Chain Manager",
+   "place": "Aspen Aerogels",
+   "note": "[Add from LinkedIn: your scope, e.g., sourcing, inventory or planning, and one result.]"
+  },
+  {
+   "when": "Jan 2022 to Dec 2022",
+   "title": "Workday Office Assistant",
+   "place": "Office of Student Employment, Northeastern University · Boston, MA",
+   "note": "Configured Job Requisition and Recruiting with IT, reducing time-to-hire by 25%. Set up FERPA-compliant, least-privilege security roles for student employment. Documented 50+ Workday processes and trained 200+ staff, increasing system adoption by 75%."
+  },
+  {
+   "when": "May 2019 to Aug 2021",
+   "title": "Sr. Workday Analyst",
+   "place": "V.G Enterprises · Delhi, India",
+   "note": "Delivered a Workday HCM, Payroll, Compensation and Benefits implementation for 2,000+ employees across 5 locations, 10% under budget. Built 3 integrations that cut manual data entry by 80%, plus 15+ Tableau dashboards. Mentored 4 junior analysts."
+  }
+ ],
+ "certs": [
+  {
+   "when": "[Year]",
+   "title": "[Certification or Workday training]",
+   "place": "[Issuer]",
+   "note": ""
+  }
+ ],
+ "skills": [
+  {
+   "skill": "Workday integrations (Studio, Core Connector, EIB, web services)",
+   "evidence": "Case studies: payroll integrations at METRO; JobX to Workday migration"
+  },
+  {
+   "skill": "Analytics and BI (Prism Analytics, Tableau, Power BI)",
+   "evidence": "Case study: CEO/CFO budget tracker; 100+ governed reports at METRO"
+  },
+  {
+   "skill": "Workday reporting and BIRT layouts",
+   "evidence": "Case study: purchase order print report"
+  },
+  {
+   "skill": "Data governance and quality",
+   "evidence": "Prism governance framework at METRO, about 40% fewer data discrepancies"
+  },
+  {
+   "skill": "Security and segregation of duties",
+   "evidence": "Security model and SOPs for 30+ configurations at METRO, 25% fewer security tickets"
+  },
+  {
+   "skill": "Release and change management",
+   "evidence": "Twice-yearly Workday releases with 4 COE teams, 99.9% uptime"
+  },
+  {
+   "skill": "Training and documentation",
+   "evidence": "50+ process guides and 200+ staff trained at Northeastern"
+  },
+  {
+   "skill": "Data engineering and SQL",
+   "evidence": "Data projects: Airflow sentiment pipeline, AWS YouTube analysis, MySQL pharmacy database; [AAIT Jodhpur internship artifact]"
+  },
+  {
+   "skill": "Supply chain operations",
+   "evidence": "[Artifact from Aspen Aerogels]"
+  },
+  {
+   "skill": "Research and analysis",
+   "evidence": "DBA research proposal on financial stress and doctoral persistence"
+  }
+ ],
+ "cases": [
+  {
+   "tag": "Tableau · Finance · Executive reporting",
+   "title": "CEO/CFO budget tracker",
+   "problem": "Leadership tracked contract values and spending across five separate manual spreadsheets, which made budget reporting slow and hard to reconcile.",
+   "approach": "Built a Tableau budget tracker for the CEO and CFO that brings contract values, spend utilization and trend analysis into one view. [Add the data sources, refresh schedule and who reviewed it.]",
+   "result": "Replaced 5 manual spreadsheets and reduced leadership reporting prep time by 60%.",
+   "lesson": "[What you would repeat or change on the next executive dashboard.]"
+  },
+  {
+   "tag": "Workday Studio · Core Connector · Payroll",
+   "title": "Payroll integrations with zero defects",
+   "problem": "Payroll depends on accurate data exchange with outside agencies and vendors, including CalPERS, Positive Pay, tax agencies and benefits providers. A failed interface can mean late or incorrect pay.",
+   "approach": "Engineered integrations between Workday and 6+ third-party platforms using Studio and Core Connector, with validation rules, transformation logic and interface health monitoring.",
+   "result": "Zero-defect payroll outcomes across 26 biweekly cycles.",
+   "lesson": "[What the monitoring caught, or what you would design differently.]"
+  },
+  {
+   "tag": "Data migration · Northeastern University",
+   "title": "JobX to Workday student employment migration",
+   "problem": "Student employment records lived in JobX, separate from Workday, which slowed payroll processing.",
+   "approach": "Designed data validation rules and transformation logic, then migrated 15,000+ student employment records into Workday.",
+   "result": "99.9% data accuracy and a 30% reduction in payroll processing time.",
+   "lesson": "[What you learned about data quality in migrations.]"
+  },
+  {
+   "tag": "Workday · BIRT · Procurement",
+   "title": "Purchase order print report redesign",
+   "problem": "Procurement needed a cleaner, compliant purchase order document to send to vendors. [Describe what was wrong with the old layout and who it affected.]",
+   "approach": "Modified the Workday BIRT report design and its XML data source, worked through layout requirements with Procurement, tested against real purchase order scenarios, and deployed the change. [Add specifics: fields added, logic changed, test cases run.]",
+   "result": "[Measured outcome, e.g., fewer vendor clarification requests, time saved per PO, or an audit finding resolved.]",
+   "lesson": "[What you would repeat or change on the next report project.]"
+  }
+ ],
+ "projects": [
+  {
+   "when": "[Year]",
+   "title": "ETL pipeline for tweet sentiment analysis",
+   "place": "Airflow · AWS · Naive Bayes classifier",
+   "note": "Built an Airflow pipeline that pulled 500 Netflix-related tweets a day for 7 days and classified them to estimate the share of positive reviews for a movie.",
+   "link": "https://github.com/MathurAbhishek-12/Movie-Sentiment-Analysis"
+  },
+  {
+   "when": "[Year]",
+   "title": "Pharmacy database management system",
+   "place": "MySQL · Tableau · Excel · seaborn",
+   "note": "Designed a pharmacy transactions database that lets customers browse and filter medicines by chemical composition, price, synthetic or natural ingredients, and budget. Modeled it with EER and UML diagrams and visualized the data in Tableau, seaborn and matplotlib.",
+   "link": "https://docs.google.com/presentation/d/1QPO8mL1W-5G_eJkgTmmfX9092ziy5Blq/edit#slide=id.p29"
+  },
+  {
+   "when": "[Year]",
+   "title": "YouTube data analysis on AWS",
+   "place": "AWS Glue · Athena · Lambda · Redshift · IAM · CloudWatch · SQL · Power BI",
+   "note": "[Add one or two sentences: what data you analyzed, how the pipeline worked, and what you found.]",
+   "link": "[Add the GitHub link]"
+  }
+ ],
+ "research": [
+  {
+   "when": "2026",
+   "title": "Financial Stress and Intention to Persist Among Online Doctoral Students",
+   "place": "Research proposal, DOC700 Doctoral Foundations, Westcliff University",
+   "note": "[One or two sentences on your research question and method]"
+  }
+ ],
+ "leadership": [
+  {
+   "when": "Sep 2024 to present",
+   "title": "Workday release management",
+   "place": "Santa Cruz METRO, with 4 COE teams",
+   "note": "Lead impact analysis across HCM, Finance and Payroll and coordinate unit, end-to-end, regression and user acceptance testing for each twice-yearly release, keeping system uptime at 99.9%."
+  },
+  {
+   "when": "Sep 2024 to present",
+   "title": "Analyst mentoring and security SOPs",
+   "place": "Santa Cruz METRO",
+   "note": "Mentor 2 analysts and serve as escalation point. Wrote SOPs for 30+ security configurations, reducing security-related tickets by 25%."
+  },
+  {
+   "when": "2022",
+   "title": "Workday training program",
+   "place": "Office of Student Employment, Northeastern University",
+   "note": "Documented 50+ processes and trained 200+ staff, increasing system adoption by 75%."
+  },
+  {
+   "when": "2019 to 2021",
+   "title": "Knowledge transfer and mentoring",
+   "place": "V.G Enterprises",
+   "note": "Mentored 4 junior analysts and ran 25+ knowledge-transfer sessions, reducing system-related queries by 30%."
+  }
+ ],
+ "recs": [
+  {
+   "quote": "[Ask a supervisor for a short letter and paste a two-sentence excerpt here.]",
+   "who": "[Name, Title, Organization]"
+  },
+  {
+   "quote": "[Ask a professor or colleague for a second letter.]",
+   "who": "[Name, Title, Organization]"
+  }
+ ],
+ "journal": [
+  {
+   "when": "[Week #]",
+   "title": "Starting the portfolio",
+   "place": "Internship journal",
+   "note": "Read three resources on professional portfolios and outlined this site. Main takeaway: collecting evidence is a continual process, so I will document each completed system change with its problem, approach and measured result. Next: write up the PO report case study with before-and-after numbers."
+  }
+ ]
+}</script><script id="app">
+(function(){
+var FONT='<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">';
+var HEAD='<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body>';
+var S=JSON.parse(document.getElementById('state').textContent);
+var ORIG=JSON.stringify(S);
+var editing=false,dirty=false,art=null,canEdit=false,phIndex=0,saving=false;
+var root=document.getElementById('root');
+var PH=/\[[^\]]*\]/g;
+var SECTIONS=[['about','About'],['credentials','Credentials'],['skills','Skills and evidence'],['cases','Case studies'],['projects','Data projects'],['research','Research'],['leadership','Leadership'],['recs','Recommendations'],['journal','Journal']];
+var TPL={
+  entry:{when:'[Year]',title:'[Title]',place:'[Organization]',note:'[Details]'},
+  skill:{skill:'[Skill]',evidence:'[Where in this portfolio it is proven]'},
+  contact:{label:'[Label]',value:'[Value]'},
+  case:{tag:'[Tools · Business area]',title:'[Project title]',problem:'[The problem]',approach:'[What you did]',result:'[Measured result]',lesson:'[What you learned]'},
+  rec:{quote:'[Excerpt from the letter]',who:'[Name, Title, Organization]'},
+  project:{when:'[Year]',title:'[Project title]',place:'[Tools used]',note:'[What you built and the result]',link:'[https://link-to-project]'},
+  journal:{when:'[Week #]',title:'[Entry title]',place:'Internship journal',note:'[What happened, what you learned, what is next]'}
+};
+function get(p){return p.split('.').reduce(function(o,k){return o==null?o:o[k];},S);}
+function set(p,v){var ks=p.split('.'),last=ks.pop(),o=ks.reduce(function(o,k){return o[k];},S);o[last]=v;}
+function h(tag,cls,kids){var e=document.createElement(tag);if(cls)e.className=cls;(kids||[]).forEach(function(k){if(k!=null)e.append(k);});return e;}
+function fillPH(e,v){var i=0;v.replace(PH,function(m,off){if(off>i)e.append(v.slice(i,off));var mk=h('mark','ph');mk.textContent=m;e.append(mk);i=off+m.length;return m;});if(i<v.length)e.append(v.slice(i));}
+function txt(tag,cls,path,opt){var v=get(path)||'';var e=h(tag,cls);
+  if(editing){e.textContent=v;e.contentEditable='true';e.dataset.path=path;e.classList.add('ed');}
+  else{if(!v&&opt)return null;fillPH(e,v);}
+  return e;}
+function list(path,cls,item,tpl,addLabel){
+  var arr=get(path)||[];var box=h('div',cls);
+  arr.forEach(function(_,i){var it=item(path+'.'+i);
+    if(editing){var rm=h('button','rm');rm.type='button';rm.textContent='Remove';
+      rm.onclick=function(){arr.splice(i,1);dirty=true;render();};
+      var w=h('div','item-wrap',[it,rm]);box.append(w);} else box.append(it);});
+  if(!editing)return box;
+  var add=h('button','add');add.type='button';add.textContent='+ '+addLabel;
+  add.onclick=function(){arr.push(JSON.parse(JSON.stringify(tpl)));dirty=true;render();};
+  return h('div','listwrap',[box,add]);}
+function entry(p){var body=h('div','entry-body',[txt('h4','',p+'.title'),txt('p','place',p+'.place',true),txt('p','note',p+'.note',true)]);var lk=get(p+'.link');
+  if(lk!==undefined){if(editing){body.append(h('p','linkrow',[lbl('Link'),txt('span','',p+'.link')]));}
+    else if(/^https?:\/\//.test(lk)){var a=h('a','more');a.href=lk;a.target='_blank';a.rel='noopener';a.textContent='View project';body.append(a);}
+    else if(lk){body.append(txt('p','note',p+'.link'));}}
+  return h('article','entry',[txt('p','when',p+'.when'),body]);}
+function contactVal(p){var v=get(p+'.value')||'';if(!editing&&/^https?:\/\//.test(v)){var a=h('a','val');a.href=v;a.target='_blank';a.rel='noopener';a.textContent=v.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'');return a;}return txt('span','val',p+'.value');}
+function section(id,title,kids,meta){var h2=h('h2','',[title]);if(meta){var sm=h('small');sm.textContent=meta;h2.append(sm);}var s=h('section','',[h2].concat(kids));s.id=id;return s;}
+function sub(t){var p=h('p','sub');p.textContent=t;return p;}
+function lbl(t){var s=h('span','cell-lbl');s.textContent=t;return s;}
 
-		<!-- Wrapper -->
-			<div id="wrapper" class="fade-in">
+function render(){
+  var y=window.scrollY;root.textContent='';
+  var nav=h('ul','route');
+  SECTIONS.forEach(function(s){var a=h('a');a.href='#'+s[0];a.textContent=s[1];a.dataset.sec=s[0];nav.append(h('li','',[a]));});
+  var side=h('aside','side',[
+    txt('p','kicker','profile.kicker'),
+    txt('h1','','profile.name'),
+    h('div','',[txt('p','role','profile.role'),txt('p','org','profile.org')]),
+    list('profile.contacts','contacts',function(p){return h('div','contact',[txt('span','lbl',p+'.label'),contactVal(p)]);},TPL.contact,'Add contact'),
+    h('nav','',[nav])
+  ]);
+  var cases=get('cases')||[];
+  var main=h('main','',[
+    section('about','About',[txt('p','lead','about.headline'),txt('p','prose','about.intro'),txt('p','prose','about.goals')]),
+    section('credentials','Credentials',[
+      sub('Education'),list('education','entries',entry,TPL.entry,'Add education'),
+      sub('Experience'),list('experience','entries',entry,TPL.entry,'Add role'),
+      sub('Certifications and training'),list('certs','entries',entry,TPL.entry,'Add certification')]),
+    section('skills','Skills and evidence',[
+      h('div','',[ (function(){var hd=h('div','skills-head');var a=h('span');a.textContent='Skill';var b=h('span');b.textContent='Evidence';hd.append(a,b);return hd;})() ]),
+      list('skills','skills',function(p){return h('div','skill',[txt('p','s',p+'.skill'),txt('p','e',p+'.evidence')]);},TPL.skill,'Add skill')]),
+    section('cases','Case studies',[list('cases','cases',function(p){
+      return h('article','case',[h('header','case-head',[txt('p','tag',p+'.tag'),txt('h3','',p+'.title')]),
+        h('div','case-grid',[['problem','Problem'],['approach','Approach'],['result','Result'],['lesson','Lesson learned']].map(function(k){return h('div','cell '+k[0],[lbl(k[1]),txt('p','',p+'.'+k[0])]);}))]);
+    },TPL.case,'Add case study')],cases.length+(cases.length===1?' project':' projects')),
+    section('projects','Data projects',[list('projects','entries',entry,TPL.project,'Add project')]),
+    section('research','Research',[list('research','entries',entry,TPL.entry,'Add research item')]),
+    section('leadership','Leadership and collaboration',[list('leadership','entries',entry,TPL.entry,'Add highlight')]),
+    section('recs','Recommendations',[list('recs','recs',function(p){return h('blockquote','rec',[txt('p','',p+'.quote'),txt('span','who',p+'.who')]);},TPL.rec,'Add recommendation')]),
+    section('journal','Journal',[list('journal','entries',entry,TPL.journal,'Add journal entry')]),
+    (function(){var f=h('footer');f.textContent='Working portfolio · last updated '+(S.updated||'');return f;})()
+  ]);
+  // fix skills header placement: move into the skills list box
+  var skillsBox=main.querySelector('#skills .skills');var head=main.querySelector('#skills .skills-head');
+  if(skillsBox&&head){head.parentNode.remove();skillsBox.prepend(head);}
+  root.append(h('div','wrap',[side,main]));
+  window.scrollTo(0,y);
+  watchNav();updateBar();
+}
 
-				<!-- Intro -->
-					<div id="intro">
-						<h1>Mathur's Portfolio</h1>
-						<p>A showcase of my projects and my abilities.</p>
-						<ul class="actions">
-							<li><a href="#header" class="button icon solo fa-arrow-down scrolly">Continue</a></li>
-						</ul>
-					</div>
+var io=null;
+function watchNav(){if(io)io.disconnect();if(!('IntersectionObserver' in window))return;
+  io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+    root.querySelectorAll('.route a').forEach(function(a){a.classList.toggle('on',a.dataset.sec===e.target.id);});}});},{rootMargin:'-20% 0px -70% 0px'});
+  root.querySelectorAll('main section').forEach(function(s){io.observe(s);});}
 
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">PORTFOLIO</a>
-					</header>
+root.addEventListener('input',function(ev){var t=ev.target.closest('[data-path]');if(!t)return;
+  set(t.dataset.path,t.innerText.replace(/ /g,' ').replace(/\n{3,}/g,'\n\n').trim());dirty=true;updateBar();});
+root.addEventListener('paste',function(ev){var t=ev.target.closest&&ev.target.closest('[data-path]');if(!t)return;
+  ev.preventDefault();var s=(ev.clipboardData||window.clipboardData).getData('text/plain');document.execCommand('insertText',false,s);});
 
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-							<li class="active"><a href="index.html">This is my Portfolio</a></li>
-						</ul>
-						<ul class="icons">
-							<li><a href="https://www.linkedin.com/in/mathur-abhi/" class="icon fa-linkedin"><span class="label">Linkedin</span></a></li>
-							<li><a href="https://github.com/MathurAbhishek-12" class="icon fa-github"><span class="label">GitHub</span></a></li>
-						</ul>
-					</nav>
+// toolbar
+var bar=h('div','bar');bar.hidden=true;document.body.append(bar);
+function btn(label,cls,fn){var b=h('button','btn '+(cls||''));b.type='button';b.textContent=label;b.onclick=fn;return b;}
+var statusMsg='';
+function countPH(){var n=0;(function walk(o){if(typeof o==='string'){var m=o.match(PH);if(m)n+=m.length;}else if(o&&typeof o==='object'){Object.keys(o).forEach(function(k){walk(o[k]);});}})(S);return n;}
+function updateBar(){if(!canEdit)return;bar.hidden=false;bar.textContent='';
+  var n=countPH();
+  if(n>0)bar.append(btn(n+(n===1?' gap':' gaps')+' to fill','count',jumpPH));
+  if(!editing){bar.append(btn('Edit page','primary',function(){editing=true;statusMsg='Click any text to change it.';render();}));}
+  else{var sv=btn(saving?'Saving…':'Save changes','primary',save);sv.disabled=saving||!dirty;bar.append(btn('Cancel','',cancel),sv);}
+  if(statusMsg){var s=h('span','status');s.textContent=statusMsg;bar.append(s);}
+}
+function jumpPH(){var marks=editing?Array.prototype.filter.call(root.querySelectorAll('[data-path]'),function(e){PH.lastIndex=0;return PH.test(e.textContent);}):root.querySelectorAll('mark.ph');
+  if(!marks.length)return;phIndex=phIndex%marks.length;var m=marks[phIndex++];
+  root.querySelectorAll('.hit').forEach(function(x){x.classList.remove('hit');});
+  m.scrollIntoView({block:'center'});if(editing)m.focus();else m.classList.add('hit');}
+function cancel(){var o=JSON.parse(ORIG);Object.keys(S).forEach(function(k){delete S[k];});Object.assign(S,o);editing=false;dirty=false;statusMsg='';render();}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function doc(){var json=JSON.stringify(S,null,1).replace(/</g,'\\u003c');
+  return HEAD+'<title>'+esc(S.profile.name||'My')+' Portfolio</title><meta name="claude:viewport-fit-sides" content="cover">'+FONT+
+    '<style id="css">'+document.getElementById('css').textContent+'</style><div id="root"></div><script type="application/json" id="state">'+json+
+    '<\/script><script id="app">'+document.getElementById('app').textContent+'<\/script></body></html>';}
+function save(){if(!art||saving)return;saving=true;S.updated=new Date().toISOString().slice(0,10);statusMsg='Saving…';updateBar();
+  art.publish(doc()).then(function(){dirty=false;statusMsg='Saved. Reloading…';saving=false;updateBar();},function(e){saving=false;var c=e&&e.code;
+    if(c==='conflict')statusMsg='A newer version was saved elsewhere. Loading it now.';
+    else if(c==='not_writer'||c==='not_granted')statusMsg='You can view this page but not edit it.';
+    else if(c==='consent_required')statusMsg='Allow saving when asked, then press Save again.';
+    else statusMsg='Could not save ('+(c||'error')+'). Your edits are still here. Try Save again.';
+    updateBar();});}
+window.addEventListener('beforeunload',function(e){if(dirty&&!saving){e.preventDefault();e.returnValue='';}});
 
-				<!-- Main -->
-					<div id="main">
-
-						<!-- Featured Post -->
-							<article class="post featured">
-								<header class="major">
-									
-									<h2><a href="#">My Name is <br> Abhishek Mathur</a></h2>
-									<p>I'm a passionate data enthusiast but more importantly I'm passionate about learning new ideas to overcome data challenges.</p>
-								</header>
-								<a href="#" class="image main"><img src="images/ss.png" alt="" height = "700" /></a>
-							
-								<ul class="actions special">
-									<li><a href="https://drive.google.com/file/d/1JY7CW0wr-eZIZruOM08Ca_dY-kcz6uaC/view?usp=sharing" class="button large" style="width:180px;height:70px;" >RESUME</a></li>
-								</ul>
-							</article>
-
-						<!-- Posts -->
-							<section class="posts">
-								<article>
-									<header>
-										
-										<h2><a href="https://github.com/MathurAbhishek-12/Movie-Sentiment-Analysis">Project 1<br />
-										ETL Pipeline for Tweets Sentiment Analysis</a></h2>
-									</header>
-									<a href="https://github.com/MathurAbhishek-12/Movie-Sentiment-Analysis" class="image fit"><img src="images/pic02.png" alt="" /></a>
-									<p>• Extracted 500 Netflix tweets daily using Airflow for 7 days to predict the % of positive reviews of the movie. <br> •(Skills Used: Airflow, AWS, Naive Bayes Classifier Algorithm, Machine Learning)</p>
-									<ul class="actions special">
-										<li><a href="https://github.com/MathurAbhishek-12/Movie-Sentiment-Analysis" class="button">GitHub Project Link</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										
-										<h2><a href="https://docs.google.com/presentation/d/1QPO8mL1W-5G_eJkgTmmfX9092ziy5Blq/edit#slide=id.p29">Project 2<br />
-										Database Management System</a></h2>
-									</header>
-									<a href="https://docs.google.com/presentation/d/1QPO8mL1W-5G_eJkgTmmfX9092ziy5Blq/edit#slide=id.p29" class="image fit"><img src="images/pic03.png" alt="" /></a>
-									<p>•The database allows the potential customers to browse through various medicine types and filter out the properties in accordance with their requirements i.e., chemicals, price, synthetic and natural APIs, budget, etc.<br> •Database consists of a pharmacy transactions records.  <br> • Representing EER model, UML diagram, and performed visualizations in seaborn & matplotlib. <br> •(Skills USed: MySQL, Tableau, Microsoft Excel) </p>
-									<ul class="actions special">
-										<li><a href="https://docs.google.com/presentation/d/1QPO8mL1W-5G_eJkgTmmfX9092ziy5Blq/edit#slide=id.p29" class="button">Powerpoint Slides </a></li>
-									</ul>
-								</article>
-								<article>
-									<header><h2><a href="#">Project 3<br />Youtube Data Analysis</a></h2>
-									</header>
-									<a href="#" class="image fit"><img src="images/Project3_image.png" alt="" height = "400"/></a>
-									<p>  <br> •(Skills USed: AWS Athena, AWS Glue, CloudWatch, IAM, AWS Lambda, SQL, Redshift, PowerBI) </p>
-									<ul class="actions special">
-										<li><a href="" class="button">GitHub Link </a></li>
-									</ul>
-								</article>
-							</section>
-
-						<!-- Footer -->
-							
-
-					</div>
-
-				<!-- Footer -->
-					<footer id="footer">
-						<section class="split contact">
-							<section class="alt">
-								<h3>Address</h3>
-								<p> 
-									United States </p>
-							</section>
-							<section>
-								<h3>Phone</h3>
-								<p><a href="+1 (857) 397-5230">+1 (857) 397-5230</a></p>
-							</section>
-							<section>
-								<h3>Email</h3>
-								<p><a href="mathurabhishek12@gmail.com">mathurabhishek12@gmail.com</a></p>
-							</section>
-							<section>
-								<h3>Social</h3>
-								<ul class="icons alt">
-									<li><a href="https://www.linkedin.com/in/mathur-abhi/" class="icon fa-linkedin"><span class="label">Linkedin</span></a></li>
-									<li><a href="https://github.com/MathurAbhishek-12" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
-								</ul>
-							</section>
-						</section>
-					</footer>
-
-				<!-- Copyright -->
-					<div id="copyright">
-						
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
-					</div>
-
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
-	</body>
-</html>
+render();
+function init(){if(!window.claude||!window.claude.use)return false;
+  Promise.resolve(window.claude.use('artifact')).then(function(a){art=a;if(!a)return null;return window.claude.use('user');})
+  .then(function(u){if(!art)return;return u&&u.canEdit?u.canEdit():true;})
+  .then(function(ok){if(art&&ok){canEdit=true;updateBar();}}).catch(function(){});return true;}
+if(!init())window.addEventListener('load',function(){init();});
+})();
+</script>
+</body></html>
