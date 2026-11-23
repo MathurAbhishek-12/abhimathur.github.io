@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ride with Abhishek</title>
+<meta name="description" content="Drive a bus around Santa Cruz to meet Abhishek Mathur, Business Systems Programs Manager.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* One fixed daytime world (single theme by design): coastal sky, transit teal, bus amber */
+:root{
+  --ink:#13202A; --muted:#566573; --paper:#FFFFFF; --glass:rgba(255,255,255,.92); --rule:#D3DADF;
+  --teal:#0E6B80; --teal-soft:#E1EEF1; --amber:#F2B33D; --amber-ink:#5A3D00;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#CFE3EA;color:var(--ink);font:16px/1.5 var(--body)}
+canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+[hidden]{display:none!important}
+.top{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;z-index:5;pointer-events:none;
+  padding-top:calc(env(safe-area-inset-top,0px) + 16px);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand,.skip,.nextbox{pointer-events:auto}
+.brand{background:var(--glass);border:1px solid var(--rule);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;box-shadow:0 6px 20px rgba(19,32,42,.12)}
+.kick{font:500 10.5px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.name{font:800 26px/1 var(--display);font-stretch:72%;margin-top:4px}
+.role{font-size:13px;color:var(--muted)}
+.skip{background:var(--ink);color:#fff;text-decoration:none;font:600 14px/1 var(--body);padding:11px 14px;border-radius:8px;white-space:nowrap;box-shadow:0 6px 20px rgba(19,32,42,.2)}
+.skip:hover{background:var(--teal)}
+.skip:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.nextbox{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 16px);z-index:5;display:flex;align-items:center;gap:12px;
+  background:var(--amber);color:var(--amber-ink);border-radius:10px;padding:8px 14px 8px 10px;box-shadow:0 6px 20px rgba(19,32,42,.18);max-width:calc(100vw - 32px)}
+.arrow{width:34px;height:34px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:none;transition:transform .15s linear}
+.arrow svg{width:18px;height:18px;fill:var(--amber)}
+.nexttxt{display:flex;flex-direction:column;min-width:0}
+.lbl{font:500 10px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+#nextName{font:700 17px/1.2 var(--display);font-stretch:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#nextDist{font:400 12px/1.3 var(--mono)}
+.count{font:500 12px/1 var(--mono);background:rgba(255,255,255,.55);padding:6px 8px;border-radius:6px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.card{position:fixed;z-index:6;right:max(16px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 96px);width:min(400px,calc(100vw - 32px));
+  max-height:calc(100% - 210px);overflow:auto;background:var(--paper);border-radius:12px;border:1px solid var(--rule);box-shadow:0 16px 40px rgba(19,32,42,.25);padding:20px 22px 22px}
+.card .x{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:1px solid var(--rule);background:#fff;font-size:20px;line-height:1;cursor:pointer;color:var(--muted)}
+.stopno{font:500 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.card h2{font:800 28px/1.05 var(--display);font-stretch:78%;margin:4px 40px 12px 0;text-wrap:balance}
+.card h3{font:700 17px/1.25 var(--display);font-stretch:92%;margin:0}
+.card p{margin:0 0 10px}
+.card .lead{font:600 19px/1.3 var(--display);font-stretch:92%;color:var(--teal)}
+.item{border-top:1px solid var(--rule);padding:12px 0}
+.item:first-of-type{border-top:0}
+.meta{font:400 12px/1.5 var(--mono);color:var(--muted)}
+.place{color:var(--teal);font-weight:600;font-size:14px}
+.note{color:var(--muted);font-size:15px;margin-top:4px}
+.res{background:var(--teal-soft);border-radius:6px;padding:8px 10px;font-size:15px;margin-top:6px}
+.res b{font:500 10px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--teal);display:block}
+details{margin-top:6px;font-size:15px;color:var(--muted)}
+summary{cursor:pointer;color:var(--teal);font-weight:600}
+.card a{color:var(--teal);font-weight:600}
+.done{margin-top:14px;background:var(--amber);color:var(--amber-ink);border-radius:8px;padding:10px 12px;font-size:15px}
+.done a{color:var(--ink)}
+.stops{position:fixed;z-index:5;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;gap:6px;overflow-x:auto;
+  max-width:calc(100vw - 32px);padding:6px;background:var(--glass);border:1px solid var(--rule);border-radius:12px;box-shadow:0 6px 20px rgba(19,32,42,.12);scrollbar-width:none}
+.stops button{flex:none;display:flex;align-items:center;gap:6px;border:1px solid var(--rule);background:#fff;border-radius:999px;padding:6px 12px 6px 6px;font:600 13px/1 var(--body);color:var(--ink);cursor:pointer;white-space:nowrap}
+.stops button .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--teal-soft);color:var(--teal);font:500 11px/1 var(--mono)}
+.stops button.seen .n{background:var(--teal);color:#fff}
+.stops button.here{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal-soft)}
+.pad{position:fixed;z-index:5;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);display:none;justify-content:space-between;pointer-events:none;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.pad div{display:flex;gap:10px;pointer-events:auto}
+.pad .pedals{flex-direction:column}
+.pad button{width:64px;height:64px;border-radius:16px;border:1px solid var(--rule);background:var(--glass);font-size:22px;color:var(--ink);touch-action:none;-webkit-user-select:none;user-select:none}
+.pad button.on{background:var(--amber)}
+@media (pointer:coarse){.pad{display:flex}}
+.intro{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:rgba(19,32,42,.35);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ticket{width:min(460px,100%);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(19,32,42,.35)}
+.ticket .band{background:var(--amber);color:var(--amber-ink);padding:14px 22px;display:flex;justify-content:space-between;font:500 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.ticket .tb{padding:20px 22px 22px;border-top:2px dashed var(--rule)}
+.ticket h1{font:800 40px/1 var(--display);font-stretch:72%;margin:0 0 10px}
+.ticket p{margin:0 0 14px;color:var(--muted)}
+.keys{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:15px;margin-bottom:18px;align-items:center}
+kbd{font:500 12px/1 var(--mono);background:var(--teal-soft);color:var(--teal);border-radius:5px;padding:5px 7px;white-space:nowrap}
+.go{width:100%;border:0;background:var(--teal);color:#fff;font:700 18px/1 var(--display);font-stretch:90%;padding:15px;border-radius:10px;cursor:pointer}
+.go:hover{background:var(--ink)}
+.alt{display:block;text-align:center;margin-top:12px;color:var(--muted);font-size:14px}
+@media (max-width:700px){
+  .brand .role{display:none}
+  .name{font-size:22px}
+  .skip{font-size:13px;padding:9px 10px}
+  .nextbox{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 236px)}
+  .card{top:calc(env(safe-area-inset-top,0px) + 84px);left:max(16px,env(safe-area-inset-left,0px));width:auto;max-height:46%}
+}
+@media (max-width:700px) and (pointer:fine){.nextbox{bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}}
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="3D map of a bus route around Santa Cruz"></canvas>
+<div class="top">
+  <div class="brand"><span class="kick">Route AM · Santa Cruz, CA</span><span class="name">Abhishek Mathur</span><span class="role">Business Systems Programs Manager</span></div>
+  <a class="skip" id="skip" href="#">Classic portfolio</a>
+</div>
+<div class="nextbox" id="nextbox" hidden>
+  <div class="arrow" id="arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 21 20 12 15 3 20Z"/></svg></div>
+  <div class="nexttxt"><span class="lbl">Next stop</span><b id="nextName"></b><span id="nextDist"></span></div>
+  <span class="count" id="count"></span>
+</div>
+<aside class="card" id="card" hidden aria-live="polite"><button class="x" id="closeCard" type="button" aria-label="Close">×</button><div id="cardBody"></div></aside>
+<nav class="stops" id="stopsNav" aria-label="Jump to a stop"></nav>
+<div class="pad" id="pad" aria-hidden="true">
+  <div class="steer"><button type="button" data-k="left">◀</button><button type="button" data-k="right">▶</button></div>
+  <div class="pedals"><button type="button" data-k="up">▲</button><button type="button" data-k="down">▼</button></div>
+</div>
+<div class="intro" id="intro">
+  <div class="ticket" role="dialog" aria-labelledby="t1">
+    <div class="band"><span>Route AM</span><span>8 stops · loop</span></div>
+    <div class="tb">
+      <h1 id="t1">All aboard.</h1>
+      <p>Drive the bus around Santa Cruz. Each stop tells part of my story, from running Workday at Santa Cruz METRO to deep learning research.</p>
+      <div class="keys">
+        <span><kbd>↑</kbd> <kbd>↓</kbd></span><span>Drive and brake (or W and S)</span>
+        <span><kbd>←</kbd> <kbd>→</kbd></span><span>Steer (or A and D)</span>
+        <span><kbd>Stop</kbd></span><span>Pull up at a stop to read it</span>
+        <span><kbd>1–8</kbd></span><span>Jump straight to a stop</span>
+      </div>
+      <button class="go" id="go" type="button">Start driving</button>
+      <a class="alt" id="alt" href="#">Prefer reading? Open the classic portfolio</a>
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script type="application/json" id="data">{"updated": "2026-11-23", "profile": {"kicker": "Business systems · Workday · Analytics", "name": "Abhishek Mathur", "role": "Business Systems Programs Manager", "org": "Santa Cruz Metropolitan Transit District (Santa Cruz METRO)", "contacts": [{"label": "Email", "value": "mathurabhishek12@gmail.com"}, {"label": "LinkedIn", "value": "https://www.linkedin.com/in/mathur-abhi/"}, {"label": "GitHub", "value": "https://github.com/MathurAbhishek-12"}, {"label": "Tableau", "value": "https://public.tableau.com/app/profile/mathur/vizzes"}, {"label": "Based in", "value": "Santa Cruz, California"}]}, "about": {"headline": "I turn Workday data and integrations into systems leaders can trust.", "intro": "I work where enterprise software, data and operations meet. At Santa Cruz METRO I lead Workday across HCM, Finance, Payroll, Benefits and Procurement: integrations with the bank, tax agencies and benefits providers, governed reporting in Prism Analytics and Tableau, security, and twice-yearly releases. My work at METRO has saved the agency more than $500,000, including about $475,000 between September 2025 and August 2026.\nI came to business systems through data. I have built data pipelines, trained deep learning models for computer vision, and worked in supply chain, and I bring that analytical habit to every system I run. I hold an MS in Engineering Management from Northeastern University and am pursuing a Doctor of Business Administration in IT Management at Westcliff University.", "goals": "My goal is to grow from running enterprise systems into leading IT strategy: setting the technology direction for public-sector and mission-driven organizations, and using my doctoral training to make technology decisions that are measurable, well documented and built around the people who use them."}, "education": [{"when": "In progress", "title": "Doctor of Business Administration, IT Management", "place": "Westcliff University · San Francisco, CA", "note": ""}, {"when": "Dec 2023", "title": "MS, Engineering Management", "place": "Northeastern University · Boston, MA", "note": "GPA 3.8 / 4.0. Coursework: Data Mining in Engineering (IE 7275), Data Management for Analytics (IE 7374), Probability and Statistics (IE 6200), Applied Statistics (MATH 7343), Deterministic Operations Research (OR 6205), Project Management in Engineering (EMGT 5220), Economic Decision Making (EMGT 6225), Lean Concepts and Applications (IE 5617)."}, {"when": "May 2020", "title": "B.Tech, Electronics and Communication Engineering", "place": "Guru Gobind Singh Indraprastha University (GGSIPU) · New Delhi, India", "note": ""}], "experience": [{"when": "Oct 2024 to present", "title": "Business Systems Programs Manager", "place": "Santa Cruz Metropolitan Transit District · Santa Cruz, CA", "note": "Lead Workday across HCM, Finance, Payroll, Benefits and Procurement, saving the agency more than $500,000 (about $475,000 of it between Sep 2025 and Aug 2026). Build and maintain integrations with Wells Fargo (Positive Pay), CalPERS, tax agencies and Lincoln, including the annual W-2 (EFW2) file and quarterly payroll tax filings, with zero payroll defects across 26 biweekly cycles. Built Prism Analytics pipelines, 100+ governed reports and Tableau dashboards that cut ad-hoc data requests by about 35%. Lead twice-yearly Workday releases and the security model, and mentor 2 analysts."}, {"when": "Sep 2024 to Oct 2024", "title": "Data Scientist", "place": "Bright Mind · Boston, MA (remote)", "note": "Short contract on the data team. Cleaned and modeled datasets in Python and SQL, built exploratory analyses and predictive models, and turned the results into dashboards and briefings for non-technical stakeholders."}, {"when": "Apr 2024 to Sep 2024", "title": "Deep Learning Researcher (volunteer)", "place": "Statistics Without Borders · Remote", "note": "Project 245, Eyesea: Marine Pollution Computer Vision. Eyesea, a nonprofit that maps marine pollution from geotagged photos, partnered with Statistics Without Borders to build a debris-identification model. Building on the open-source DeepPlastic model, I trained and compared deep learning image classifiers in Python to predict whether a shoreline or ocean-surface photo contains waste, covering data cleaning, preprocessing, training and testing, with version control in Git."}, {"when": "Jan 2022 to Sep 2024", "title": "Operations Assistant", "place": "Northeastern University · Boston, MA", "note": "Supported Workday operations for student employment, first part-time and then full-time. Migrated 15,000+ student employment records from JobX to Workday at 99.9% accuracy, cutting payroll processing time by 30%. Implemented Time Tracking and Absence for 5,000+ users and led 3 Studio and EIB integration projects, reducing timesheet errors by 40%. Configured Job Requisition and Recruiting, reducing time-to-hire by 25%, and set up FERPA-compliant security roles. Documented 50+ processes, trained 200+ staff, and built 20+ Tableau dashboards and Prism reports with People Analytics."}, {"when": "Jun 2023 to Sep 2023", "title": "Data Engineer Intern", "place": "IIT Jodhpur · Jodhpur, India (remote)", "note": "Built a data pipeline for a new product the team was developing, using Kafka to stream incoming event data and Hadoop (HDFS) to store and batch-process it for analysis. Wrote the ingestion and transformation jobs, added validation checks for malformed records, and documented the pipeline for the product team."}, {"when": "Sep 2022 to Dec 2022", "title": "Supply Chain Manager", "place": "Aspen Aerogels · Northborough, MA", "note": "Supported supply chain operations for an aerogel insulation manufacturer. Analyzed inventory levels, supplier lead times and purchase orders in Python and Excel, built reports that flagged shortage risks for production planning, and presented findings and recommendations to operations leadership."}, {"when": "May 2019 to Aug 2021", "title": "Sr. Workday Analyst", "place": "V.G Enterprises · Delhi, India", "note": "Delivered a Workday HCM, Payroll, Compensation and Benefits implementation for 2,000+ employees across 5 locations, 10% under budget. Built 3 integrations that cut manual data entry by 80%, plus 15+ Tableau dashboards. Mentored 4 junior analysts."}], "certs": [{"when": "Apr 2024", "title": "AI & Agility: Introduction", "place": "Scrum Alliance", "note": "", "link": "https://bcert.me/sosxoodcq"}, {"when": "Jan 2024", "title": "High Performance Habits", "place": "LinkedIn Skills", "note": "Team leadership"}, {"when": "Dec 2023", "title": "LAI Lean Academy® Course", "place": "Completed in Northeastern University IE 5617", "note": "Lean concepts and applications, taught by Prof. Hugh McManus"}, {"when": "Oct 2023", "title": "Finance Job Simulation", "place": "Citi", "note": "Data analysis"}, {"when": "Aug 2023", "title": "DA0130: Analyzing Data with Excel (verified)", "place": "IBM · edX", "note": "", "link": "https://courses.edx.org/certificates/1cea0af4452b4463bb0b71b15c3673a1"}, {"when": "Mar 2023", "title": "Google Cloud Computing Foundations: Data, ML, and AI in Google Cloud", "place": "Google Cloud Skills Boost", "note": "Databases, ETL, machine learning"}, {"when": "Sep 2022", "title": "Supply Chain Analytics", "place": "Rutgers University", "note": ""}, {"when": "Jul 2021", "title": "Data Analysis with Python", "place": "Cognitive Class (IBM)", "note": ""}, {"when": "Jun 2021", "title": "SQL and Relational Databases 101", "place": "Cognitive Class (IBM)", "note": ""}, {"when": "Jun 2021", "title": "Data Analytics Essentials", "place": "Coursera", "note": ""}, {"when": "Jan 2021", "title": "The Fundamentals of Digital Marketing", "place": "Google", "note": ""}, {"when": "Dec 2020", "title": "Python for Data Science", "place": "IBM", "note": ""}], "skills": [{"skill": "Workday integrations (Studio, Core Connector, EIB, web services)", "evidence": "Case studies: Wells Fargo Positive Pay, payroll tax and W-2 filings, Lincoln benefits and EOI"}, {"skill": "Analytics and BI (Prism Analytics, Tableau, Power BI)", "evidence": "Case study: CEO/CFO budget tracker; 100+ governed reports at METRO; Tableau Public profile"}, {"skill": "Workday reporting and BIRT layouts", "evidence": "Case study: purchase order, check and offer letter layouts"}, {"skill": "Data governance and quality", "evidence": "Prism governance framework at METRO, about 40% fewer data discrepancies"}, {"skill": "Security and segregation of duties", "evidence": "Security model and SOPs for 30+ configurations at METRO, 25% fewer security tickets"}, {"skill": "Release and change management", "evidence": "Twice-yearly Workday releases with 4 COE teams, 99.9% uptime"}, {"skill": "Data engineering and SQL", "evidence": "Kafka and Hadoop pipeline at IIT Jodhpur; Airflow sentiment pipeline; AWS YouTube analysis; IBM SQL certificate"}, {"skill": "Machine learning and computer vision", "evidence": "Eyesea marine debris classifier (Statistics Without Borders); lung cancer pathology research at Northeastern"}, {"skill": "Supply chain operations", "evidence": "Supply Chain Manager at Aspen Aerogels; Rutgers Supply Chain Analytics certificate"}, {"skill": "Agile and Lean", "evidence": "Scrum Alliance AI & Agility; LAI Lean Academy (Northeastern IE 5617)"}, {"skill": "Training and documentation", "evidence": "50+ process guides and 200+ staff trained at Northeastern"}], "cases": [{"tag": "Workday Core Connector · Treasury · Wells Fargo", "title": "Positive Pay integration with Wells Fargo", "problem": "METRO needed Positive Pay with Wells Fargo, so the bank checks every issued check against an approved list before paying it and the agency is protected from check fraud. Some supplier records stored part of the payee name in address line 1, so those checks would not match.", "approach": "Configured the Workday Core Connector: Positive Pay integration to send issued-check files to Wells Fargo. Traced the mismatches to incomplete supplier payee names, proposed using supplier alternate names to carry the full legal name, and briefed the finance leader on the fix.", "result": "Issued checks are verified by the bank before payment, and the alternate-name approach fixes payee mismatches in the supplier record itself rather than in each file.", "lesson": "Integration problems are often master-data problems. Fixing the supplier record once beats correcting every outbound file."}, {"tag": "Workday Studio · Core Connector · Payroll tax", "title": "Payroll tax and year-end filing integrations", "problem": "Payroll depends on accurate filings with tax agencies, CalPERS and benefits providers. A failed or late file can mean penalties or incorrect pay.", "approach": "Built and maintain METRO's annual W-2 file in the federal EFW2 format and its quarterly payroll tax filing integrations, alongside integrations with CalPERS and other outside platforms, with validation rules, transformation logic and interface health monitoring.", "result": "Zero-defect payroll outcomes across 26 biweekly cycles.", "lesson": "Validating data before a file leaves Workday is far cheaper than correcting it after an agency rejects it."}, {"tag": "Workday Benefits · Lincoln · EOI", "title": "Lincoln benefits integration with Evidence of Insurability", "problem": "Benefit elections had to reach Lincoln accurately, including Evidence of Insurability (EOI) for coverage above guaranteed-issue limits.", "approach": "Built the Lincoln benefits integration with EOI handling, so elections and pending-EOI coverage flow from Workday to the carrier.", "result": "Employee coverage elections reach the carrier directly from Workday, without manual re-entry.", "lesson": "Benefits files need business rules such as pending EOI coverage designed in from the start, not just field mapping."}, {"tag": "Tableau · Finance · Executive reporting", "title": "CEO/CFO budget tracker", "problem": "Leadership tracked contract values and spending across five separate manual spreadsheets, which made budget reporting slow and hard to reconcile.", "approach": "Built a Tableau budget tracker for the CEO and CFO that brings contract values, spend utilization and trend analysis into one view, fed from Workday financial data.", "result": "Replaced 5 manual spreadsheets and reduced leadership reporting prep time by 60%.", "lesson": "Executives adopt a dashboard when it answers the questions they already ask in meetings, so I designed it around those questions first."}, {"tag": "Workday BIRT · Procurement", "title": "Purchase order print layout", "problem": "METRO's purchase order print layout needed added columns and cleaner formatting before Procurement could move forward with request-for-quote (RFQ) setup.", "approach": "Applied targeted XML patches to the Workday BIRT report definition to add columns and truncate long display fields, and tested the layout with Procurement. I also configured the BIRT layouts for METRO's checks and offer letters.", "result": "The new PO layout is in final testing; RFQ setup in Workday resumes once it is approved.", "lesson": "Small, targeted XML changes are easier to test and roll back than rebuilding a layout from scratch."}], "projects": [{"when": "Graduate project", "title": "ETL pipeline for tweet sentiment analysis", "place": "Airflow · AWS · Naive Bayes classifier", "note": "Built an Airflow pipeline that pulled 500 Netflix-related tweets a day for 7 days and classified them to estimate the share of positive reviews for a movie.", "link": "https://github.com/MathurAbhishek-12/Movie-Sentiment-Analysis"}, {"when": "Graduate project", "title": "Pharmacy database management system", "place": "MySQL · Tableau · Excel · seaborn", "note": "Designed a pharmacy transactions database that lets customers browse and filter medicines by chemical composition, price, synthetic or natural ingredients, and budget. Modeled it with EER and UML diagrams and visualized the data in Tableau, seaborn and matplotlib.", "link": "https://docs.google.com/presentation/d/1QPO8mL1W-5G_eJkgTmmfX9092ziy5Blq/edit#slide=id.p29"}, {"when": "Graduate project", "title": "YouTube data analysis on AWS", "place": "AWS Glue · Athena · Lambda · Redshift · IAM · CloudWatch · SQL · Power BI", "note": "Built a serverless pipeline on AWS that catalogued YouTube trending-video data with Glue, cleaned and transformed it with Lambda, queried it with Athena and Redshift, and visualized engagement trends in Power BI, with IAM roles for access and CloudWatch for monitoring."}], "research": [{"when": "Sep 2023 to Apr 2024", "title": "Deep learning for lung cancer pathology", "place": "Deep Learning Research Volunteer · Northeastern University, Boston, MA", "note": "Worked with a Northeastern research group comparing deep learning architectures, including Vision Transformer (ViT), DeiT, CaiT, Swin Transformer and ResNet, for classifying lung adenocarcinoma growth patterns from stained whole-slide pathology images. I prepared image data and trained and evaluated models using accuracy and Cohen's kappa. Unpublished."}], "leadership": [{"when": "Oct 2024 to present", "title": "Workday release management", "place": "Santa Cruz METRO, with 4 COE teams", "note": "Lead impact analysis across HCM, Finance and Payroll and coordinate unit, end-to-end, regression and user acceptance testing for each twice-yearly release, keeping system uptime at 99.9%."}, {"when": "Oct 2024 to present", "title": "Analyst mentoring and security SOPs", "place": "Santa Cruz METRO", "note": "Mentor 2 analysts and serve as escalation point. Wrote SOPs for 30+ security configurations, reducing security-related tickets by 25%."}, {"when": "2022", "title": "Workday training program", "place": "Northeastern University", "note": "Documented 50+ processes and trained 200+ staff, increasing system adoption by 75%."}, {"when": "2019 to 2021", "title": "Knowledge transfer and mentoring", "place": "V.G Enterprises", "note": "Mentored 4 junior analysts and ran 25+ knowledge-transfer sessions, reducing system-related queries by 30%."}], "recs": [], "journal": [{"when": "Oct 2026", "title": "Starting the portfolio", "place": "INT 708 internship journal", "note": "Read three resources on professional portfolios and outlined this site. Main takeaway: collecting evidence is a continual process, so I will document each completed system change with its problem, approach and measured result."}]}</script>
+<script>
+(function(){
+var PORTFOLIO='https://mathurabhishek-12.github.io/abhimathur.github.io/';
+['skip','alt'].forEach(function(id){document.getElementById(id).href=PORTFOLIO;});
+var D=JSON.parse(document.getElementById('data').textContent);
+
+/* ---------- stop content ---------- */
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
+function link(href,text){var a=el('a',null,text);a.href=href;a.target='_blank';a.rel='noopener';return a;}
+function entryItem(x,opts){opts=opts||{};var it=el('div','item');it.append(el('div','meta',x.when));it.append(el('h3',null,x.title));if(x.place)it.append(el('div','place',x.place));
+  if(x.note){if(opts.fold){var d=el('details');d.append(el('summary',null,'More'));d.append(el('p',null,x.note));it.append(d);}else it.append(el('p','note',x.note));}
+  if(x.link&&/^https?:/.test(x.link))it.append(link(x.link,opts.linkText||'View project'));return it;}
+var exp=D.experience||[];
+var swb=exp.filter(function(x){return /Statistics Without Borders/.test(x.place);});
+var STOPS=[
+ {name:'Welcome aboard',render:function(b){b.append(el('p','lead',D.about.headline));D.about.intro.split('\n').forEach(function(t){b.append(el('p',null,t));});b.append(el('p',null,D.about.goals));}},
+ {name:'Santa Cruz METRO',render:function(b){b.append(entryItem(exp[0]));(D.leadership||[]).slice(0,2).forEach(function(x){b.append(entryItem(x));});}},
+ {name:'Case studies',render:function(b){(D.cases||[]).forEach(function(c){var it=el('div','item');it.append(el('div','meta',c.tag));it.append(el('h3',null,c.title));
+   var r=el('div','res');r.append(el('b',null,'Result'));r.append(document.createTextNode(c.result));it.append(r);
+   var d=el('details');d.append(el('summary',null,'Problem and approach'));d.append(el('p',null,c.problem));d.append(el('p',null,c.approach));d.append(el('p',null,'Lesson: '+c.lesson));it.append(d);b.append(it);});}},
+ {name:'The journey',render:function(b){exp.slice(1).filter(function(x){return swb.indexOf(x)<0;}).forEach(function(x){b.append(entryItem(x,{fold:true}));});}},
+ {name:'Research and AI',render:function(b){(D.research||[]).concat(swb).forEach(function(x){b.append(entryItem(x));});}},
+ {name:'Data projects',render:function(b){(D.projects||[]).forEach(function(x){b.append(entryItem(x));});}},
+ {name:'School and certificates',render:function(b){(D.education||[]).forEach(function(x){b.append(entryItem(x));});
+   var c=el('details');c.open=true;c.append(el('summary',null,(D.certs||[]).length+' certifications'));
+   (D.certs||[]).forEach(function(x){var p=el('p',null,x.title+' · '+x.place+' · '+x.when+' ');if(x.link)p.append(link(x.link,'View'));c.append(p);});b.append(c);}},
+ {name:'Say hello',render:function(b){b.append(el('p',null,'Thanks for riding. Here is where to find me.'));
+   (D.profile.contacts||[]).forEach(function(c){var it=el('div','item');it.append(el('div','meta',c.label));
+     if(/^https?:/.test(c.value))it.append(link(c.value,c.value.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'')));else it.append(el('div',null,c.value));b.append(it);});
+   var p=el('p');p.style.marginTop='14px';var a=el('a',null,'Read the full portfolio');a.href=PORTFOLIO;p.append(a);b.append(p);}}
+];
+
+/* ---------- HUD ---------- */
+var card=document.getElementById('card'),cardBody=document.getElementById('cardBody'),nav=document.getElementById('stopsNav');
+var visited=new Set(),active=-1,closedFor=-1,started=false;
+STOPS.forEach(function(s,i){var b=el('button');b.type='button';var n=el('span','n',String(i+1));b.append(n,document.createTextNode(s.name));b.onclick=function(){start();jumpTo(i);};nav.append(b);s.btn=b;});
+function showCard(i){cardBody.textContent='';cardBody.append(el('div','stopno','Stop '+(i+1)+' of '+STOPS.length));cardBody.append(el('h2',null,STOPS[i].name));STOPS[i].render(cardBody);
+  if(visited.size===STOPS.length){var d=el('div','done');d.append(document.createTextNode('Route complete. You have visited every stop. '));var a=el('a',null,'Open the classic portfolio');a.href=PORTFOLIO;d.append(a);cardBody.append(d);}
+  card.hidden=false;card.scrollTop=0;}
+document.getElementById('closeCard').onclick=function(){closedFor=active;card.hidden=true;};
+function updateNav(){STOPS.forEach(function(s,i){s.btn.classList.toggle('seen',visited.has(i));s.btn.classList.toggle('here',i===active);});document.getElementById('count').textContent=visited.size+' / '+STOPS.length;}
+
+/* ---------- WebGL check ---------- */
+var canvas=document.getElementById('c');
+if(!window.THREE||!(function(){try{return !!(canvas.getContext('webgl')||canvas.getContext('experimental-webgl'));}catch(e){return false;}})()){
+  var t=document.querySelector('.ticket .tb');t.querySelector('p').textContent='This browser cannot show the 3D bus ride. The classic portfolio has everything in one page.';
+  document.getElementById('go').textContent='Open the classic portfolio';document.getElementById('go').onclick=function(){location.href=PORTFOLIO;};return;}
+
+/* ---------- scene ---------- */
+var C={sky:0xCFE3EA,ground:0xB7CC9E,road:0x3B4650,line:0xF4F1E6,sand:0xE9D8AE,ocean:0x3E8DB4,bus:0xF2B33D,stripe:0x0E6B80,glass:0x1E2A33,roof:0xF6F3EA,trunk:0x7A5636,wood:0x9C7A54,teal:0x0E6B80};
+var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;
+var scene=new THREE.Scene();scene.background=new THREE.Color(C.sky);scene.fog=new THREE.Fog(C.sky,110,250);
+var camera=new THREE.PerspectiveCamera(55,1,0.5,600);
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a9a7a,0.75));
+var sun=new THREE.DirectionalLight(0xfff4e0,0.85);sun.position.set(-60,90,40);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+var sc=sun.shadow.camera;sc.left=-130;sc.right=130;sc.top=130;sc.bottom=-130;sc.near=10;sc.far=300;scene.add(sun);
+function mat(c,o){return new THREE.MeshLambertMaterial(Object.assign({color:c},o||{}));}
+function box(w,h,d,c,x,y,z,parent){var m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),typeof c==='number'?mat(c):c);m.position.set(x||0,y||0,z||0);m.castShadow=true;m.receiveShadow=true;(parent||scene).add(m);return m;}
+
+var ground=new THREE.Mesh(new THREE.PlaneGeometry(600,600),mat(C.ground));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+var sand=new THREE.Mesh(new THREE.PlaneGeometry(600,14),mat(C.sand));sand.rotation.x=-Math.PI/2;sand.position.set(0,0.01,55);sand.receiveShadow=true;scene.add(sand);
+var ocean=new THREE.Mesh(new THREE.PlaneGeometry(600,260),mat(C.ocean));ocean.rotation.x=-Math.PI/2;ocean.position.set(0,0.02,192);scene.add(ocean);
+var waves=[];for(var w=0;w<26;w++){var wv=new THREE.Mesh(new THREE.PlaneGeometry(6,0.35),mat(0xEAF4F8,{transparent:true,opacity:.7}));wv.rotation.x=-Math.PI/2;wv.position.set(-150+w*12+((w*37)%9),0.04,64+((w*53)%40));scene.add(wv);waves.push(wv);}
+
+/* route */
+var P=[[-62,-30],[-22,-46],[28,-42],[66,-16],[62,24],[28,38],[-12,34],[-50,32],[-72,6]].map(function(p){return new THREE.Vector3(p[0],0,p[1]);});
+var curve=new THREE.CatmullRomCurve3(P,true,'catmullrom',0.5);
+var N=520,samples=curve.getSpacedPoints(N);
+function ribbon(off,width,y,color){var v=[],ix=[];for(var i=0;i<=N;i++){var p=samples[i],t=curve.getTangentAt((i%N)/N),nx=-t.z,nz=t.x;
+  v.push(p.x+nx*(off+width/2),y,p.z+nz*(off+width/2),p.x+nx*(off-width/2),y,p.z+nz*(off-width/2));}
+  for(var j=0;j<N;j++){var a=j*2;ix.push(a,a+2,a+1,a+1,a+2,a+3);}
+  var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));g.setIndex(ix);g.computeVertexNormals();
+  var m=new THREE.Mesh(g,mat(color,{side:THREE.DoubleSide}));m.receiveShadow=true;scene.add(m);return m;}
+ribbon(0,10,0.03,C.road);ribbon(4.5,0.35,0.05,C.line);ribbon(-4.5,0.35,0.05,C.line);
+for(var i=0;i<N;i+=7){var t=curve.getTangentAt(i/N);var d=box(0.3,0.02,2.4,C.line,samples[i].x,0.06,samples[i].z);d.castShadow=false;d.rotation.y=Math.atan2(t.x,t.z);}
+function distToRoad(x,z){var m=1e9;for(var i=0;i<N;i+=2){var dx=samples[i].x-x,dz=samples[i].z-z,q=dx*dx+dz*dz;if(q<m)m=q;}return Math.sqrt(m);}
+
+/* seeded random */
+var seed=7;function rnd(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}
+
+/* trees: redwoods in the north, round trees elsewhere */
+var coneG=new THREE.ConeGeometry(1,1,7),trunkG=new THREE.CylinderGeometry(0.3,0.4,1,6),ballG=new THREE.IcosahedronGeometry(1,0);
+var greens=[mat(0x2F5D3A),mat(0x3F6E45),mat(0x557F4B)],trunkM=mat(C.trunk);
+function tree(x,z,red){var h=red?14+rnd()*10:5+rnd()*3;var tr=new THREE.Mesh(trunkG,trunkM);tr.scale.set(1,red?h*0.35:2,1);tr.position.set(x,(red?h*0.35:2)/2,z);tr.castShadow=true;scene.add(tr);
+  var top=new THREE.Mesh(red?coneG:ballG,greens[(rnd()*3)|0]);if(red){top.scale.set(2.6,h,2.6);top.position.set(x,h*0.35+h/2-1,z);}else{var s=2.2+rnd()*1.2;top.scale.set(s,s*1.1,s);top.position.set(x,2+s*0.8,z);}
+  top.castShadow=true;scene.add(top);}
+var placed=0,tries=0;while(placed<95&&tries<4000){tries++;var x=-140+rnd()*280,z=-120+rnd()*164;if(z>44)continue;if(distToRoad(x,z)<10)continue;if(Math.abs(x)<34&&Math.abs(z+4)<16)continue;tree(x,z,z<-58);placed++;}
+
+/* town blocks inside the loop and up north */
+var bcol=[0xE4D6C3,0xD9C7B2,0xC9D6DA,0xEDE6DA,0xB9C9CE,0xE7CFC0];
+for(var b=0;b<14;b++){var bx=-30+(b%7)*10,bz=b<7?-12:6,h=4+rnd()*9;var bb=box(7,h,7,bcol[b%6],bx,h/2,bz);var rf=box(7.4,0.4,7.4,0x8A9AA3,bx,h+0.2,bz);rf.castShadow=false;
+  for(var r=1.6;r<h-1;r+=2.2){var wn=box(7.05,0.8,5,0x5E7480,bx,r+0.6,bz);wn.castShadow=false;}}
+
+/* wharf and lighthouse */
+box(5,0.5,48,C.wood,18,1.4,72);for(var k=0;k<8;k++){box(0.5,2,0.5,C.wood,15.8,0.6,52+k*6.5);box(0.5,2,0.5,C.wood,20.2,0.6,52+k*6.5);}
+box(9,3,7,0xD9C7B2,18,3.1,92);
+var lh=new THREE.Group();lh.position.set(-84,0,54);scene.add(lh);
+var tower=new THREE.Mesh(new THREE.CylinderGeometry(1.4,2,10,12),mat(0xF6F3EA));tower.position.y=5;tower.castShadow=true;lh.add(tower);
+var band=new THREE.Mesh(new THREE.CylinderGeometry(1.62,1.72,1.4,12),mat(0xC0392B));band.position.y=6.5;lh.add(band);
+var lamp=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.2,1.6,8),mat(0xFFE9A8,{emissive:0x806020}));lamp.position.y=10.8;lh.add(lamp);
+var cap=new THREE.Mesh(new THREE.ConeGeometry(1.7,1.6,8),mat(0x13202A));cap.position.y=12.4;lh.add(cap);
+
+/* ---------- stops ---------- */
+var STOP_T=[0.03,0.15,0.28,0.40,0.52,0.64,0.76,0.88];
+var centroid=new THREE.Vector3();P.forEach(function(p){centroid.add(p);});centroid.multiplyScalar(1/P.length);
+function label(i,name){var cv=document.createElement('canvas');cv.width=640;cv.height=170;var g=cv.getContext('2d');
+  g.fillStyle='#ffffff';g.strokeStyle='#0E6B80';g.lineWidth=8;var r=34;g.beginPath();g.moveTo(r+4,4);g.arcTo(636,4,636,166,r);g.arcTo(636,166,4,166,r);g.arcTo(4,166,4,4,r);g.arcTo(4,4,636,4,r);g.closePath();g.fill();g.stroke();
+  g.fillStyle='#0E6B80';g.beginPath();g.arc(86,85,54,0,Math.PI*2);g.fill();g.fillStyle='#fff';g.font='700 56px "JetBrains Mono",monospace';g.textAlign='center';g.textBaseline='middle';g.fillText(String(i+1),86,88);
+  g.fillStyle='#13202A';g.textAlign='left';var fs=58;g.font='800 '+fs+'px Archivo, "Arial Narrow", sans-serif';while(g.measureText(name).width>470&&fs>30){fs-=2;g.font='800 '+fs+'px Archivo, "Arial Narrow", sans-serif';}g.fillText(name,160,90);
+  var tx=new THREE.CanvasTexture(cv);tx.encoding=THREE.sRGBEncoding;tx.anisotropy=4;var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,depthWrite:false}));sp.scale.set(13,3.45,1);return sp;}
+var shelterGlass=mat(0x9FC3CF,{transparent:true,opacity:.35,depthWrite:false});
+STOPS.forEach(function(s,i){var t=STOP_T[i],p=curve.getPointAt(t),tg=curve.getTangentAt(t),n=new THREE.Vector3(-tg.z,0,tg.x);
+  var side=p.clone().add(n.clone().multiplyScalar(8)).distanceTo(centroid)>p.distanceTo(centroid)?1:-1;
+  var sp=p.clone().add(n.clone().multiplyScalar(side*8.5));var g=new THREE.Group();g.position.copy(sp);g.rotation.y=Math.atan2(tg.x,tg.z);scene.add(g);
+  box(0.25,3.2,0.25,C.teal,0,1.6,-2.4,g);box(0.25,3.2,0.25,C.teal,0,1.6,2.4,g);box(2.6,0.3,5.6,C.teal,0,3.3,0,g);
+  box(0.9,0.2,4.2,C.wood,-side*0.6,0.9,0,g);
+  box(0.15,5.2,0.15,0x9AA5AD,side*1.4,2.6,3.4,g);box(0.12,1.1,1.1,C.teal,side*1.4,5.2,3.4,g);
+  var ring=new THREE.Mesh(new THREE.RingGeometry(5.2,6,48),new THREE.MeshBasicMaterial({color:0xF2B33D,transparent:true,opacity:.9,side:THREE.DoubleSide}));
+  ring.rotation.x=-Math.PI/2;ring.position.set(p.x,0.07,p.z);scene.add(ring);
+  s.p=p;s.t=t;s.ring=ring;s.group=g;s.labelPos=sp.clone().setY(8.5);});
+function addLabels(){STOPS.forEach(function(s,i){var l=label(i,s.name);l.position.copy(s.labelPos);scene.add(l);s.label=l;});}
+var fontsReady=document.fonts&&document.fonts.ready?Promise.race([document.fonts.ready,new Promise(function(r){setTimeout(r,1500);})]):Promise.resolve();
+fontsReady.then(function(){Promise.all(['800 58px Archivo','700 56px "JetBrains Mono"'].map(function(f){return document.fonts?document.fonts.load(f).catch(function(){}):0;})).then(addLabels,addLabels);});
+
+/* ---------- bus ---------- */
+var bus=new THREE.Group();scene.add(bus);var body=new THREE.Group();bus.add(body);
+box(3.2,2.6,11,C.bus,0,2.0,0,body);box(3.26,0.55,11.06,C.stripe,0,1.05,0,body);
+box(3.28,1.0,8.4,C.glass,0,2.55,-0.7,body);box(2.9,1.5,0.12,C.glass,0,2.45,5.51,body);box(2.9,1.0,0.12,C.glass,0,2.6,-5.51,body);
+box(3.0,0.28,10.4,C.roof,0,3.44,0,body);box(1.6,0.3,2.2,0xD8D4C8,0,3.7,-2,body);
+(function(){var cv=document.createElement('canvas');cv.width=512;cv.height=96;var g=cv.getContext('2d');g.fillStyle='#111';g.fillRect(0,0,512,96);g.fillStyle='#FFB020';g.font='700 54px "JetBrains Mono",monospace';g.textAlign='center';g.textBaseline='middle';g.fillText('AM  PORTFOLIO',256,52);
+  var tx=new THREE.CanvasTexture(cv);tx.encoding=THREE.sRGBEncoding;var m=new THREE.Mesh(new THREE.PlaneGeometry(2.4,0.45),new THREE.MeshBasicMaterial({map:tx}));m.position.set(0,3.02,5.58);body.add(m);})();
+var hl=mat(0xFFF6D0,{emissive:0xBBAA66});box(0.6,0.35,0.1,hl,1.1,1.2,5.56,body);box(0.6,0.35,0.1,hl,-1.1,1.2,5.56,body);
+var tl=mat(0xC0392B,{emissive:0x601010});box(0.5,0.4,0.1,tl,1.15,1.3,-5.56,body);box(0.5,0.4,0.1,tl,-1.15,1.3,-5.56,body);
+box(3.3,0.5,0.3,0x2A3640,0,0.75,5.55,body);box(3.3,0.5,0.3,0x2A3640,0,0.75,-5.55,body);
+var wheels=[];var wg=new THREE.CylinderGeometry(0.78,0.78,0.55,18);wg.rotateZ(Math.PI/2);var wm=mat(0x1B1F23);
+[[1.55,3.6],[-1.55,3.6],[1.55,-3.6],[-1.55,-3.6]].forEach(function(q){var wh=new THREE.Mesh(wg,wm);wh.position.set(q[0],0.78,q[1]);wh.castShadow=true;bus.add(wh);wheels.push(wh);});
+var shadowBlob=new THREE.Mesh(new THREE.PlaneGeometry(4,12),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.18}));shadowBlob.rotation.x=-Math.PI/2;shadowBlob.position.y=0.08;bus.add(shadowBlob);
+
+/* ---------- driving ---------- */
+var keys={up:false,down:false,left:false,right:false,brake:false};
+var speed=0,heading=0,pos=new THREE.Vector3();
+function placeAt(t){var p=curve.getPointAt(((t%1)+1)%1),tg=curve.getTangentAt(((t%1)+1)%1);pos.copy(p);heading=Math.atan2(tg.x,tg.z);speed=0;}
+placeAt(0.975);
+function jumpTo(i){placeAt(STOP_T[i]-0.012);closedFor=-1;snapCam=true;}
+var KM={ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down',ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'brake'};
+addEventListener('keydown',function(e){if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;var k=KM[e.code];
+  if(k){if(!started)start();keys[k]=true;e.preventDefault();}
+  else if(/^Digit[1-8]$/.test(e.code)){start();jumpTo(+e.code.slice(5)-1);}
+  else if(e.code==='Escape'&&!card.hidden){closedFor=active;card.hidden=true;}});
+addEventListener('keyup',function(e){var k=KM[e.code];if(k)keys[k]=false;});
+addEventListener('blur',function(){Object.keys(keys).forEach(function(k){keys[k]=false;});});
+document.querySelectorAll('#pad button').forEach(function(btn){var k=btn.dataset.k;
+  function on(e){e.preventDefault();if(!started)start();keys[k]=true;btn.classList.add('on');try{btn.setPointerCapture(e.pointerId);}catch(_){}}
+  function off(){keys[k]=false;btn.classList.remove('on');}
+  btn.addEventListener('pointerdown',on);btn.addEventListener('pointerup',off);btn.addEventListener('pointercancel',off);btn.addEventListener('lostpointercapture',off);});
+function start(){if(started)return;started=true;document.getElementById('intro').hidden=true;document.getElementById('nextbox').hidden=false;canvas.focus&&canvas.focus();}
+document.getElementById('go').onclick=start;
+
+var snapCam=true,clock=new THREE.Clock(),camLook=new THREE.Vector3(),tmp=new THREE.Vector3(),elapsed=0;
+var MAXF=28,MAXR=-9;
+function resize(){var w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=w<700?68:55;camera.updateProjectionMatrix();}
+addEventListener('resize',resize);resize();
+
+function frame(){var dt=Math.min(clock.getDelta(),0.05);elapsed+=dt;
+  if(started){
+    if(keys.up)speed+=(speed<0?55:22)*dt;else if(keys.down)speed-=(speed>0?45:16)*dt;else speed*=Math.max(0,1-1.4*dt);
+    if(keys.brake)speed*=Math.max(0,1-5*dt);
+    speed=Math.max(MAXR,Math.min(MAXF,speed));if(Math.abs(speed)<0.05&&!keys.up&&!keys.down)speed=0;
+    var steer=(keys.left?1:0)-(keys.right?1:0);heading+=steer*dt*1.9*Math.min(1,Math.abs(speed)/7)*(speed>=0?1:-1);
+    if(distToRoad(pos.x,pos.z)>6.5)speed*=Math.max(0,1-0.9*dt);
+    pos.x+=Math.sin(heading)*speed*dt;pos.z+=Math.cos(heading)*speed*dt;
+    pos.x=Math.max(-150,Math.min(150,pos.x));pos.z=Math.max(-125,Math.min(50,pos.z));
+    body.rotation.z+=((-steer*Math.min(1,Math.abs(speed)/MAXF)*0.06)-body.rotation.z)*Math.min(1,dt*6);
+  }
+  bus.position.set(pos.x,0,pos.z);bus.rotation.y=heading;wheels.forEach(function(w){w.rotation.x+=speed*dt/0.78;});
+  body.position.y=Math.abs(speed)>1?Math.sin(elapsed*14)*0.03:0;
+  /* camera */
+  var dir=tmp.set(Math.sin(heading),0,Math.cos(heading));var dist=innerWidth<700?20:17;
+  var want=new THREE.Vector3(pos.x-dir.x*dist,10.5,pos.z-dir.z*dist);
+  if(!started){var a=elapsed*0.12;want.set(pos.x+Math.sin(a)*34,26,pos.z+Math.cos(a)*34);}
+  var look=new THREE.Vector3(pos.x+dir.x*7,2,pos.z+dir.z*7);if(!started)look.set(pos.x,2,pos.z);
+  if(snapCam){camera.position.copy(want);camLook.copy(look);snapCam=false;}else{camera.position.lerp(want,1-Math.exp(-(started?3.2:1.5)*dt));camLook.lerp(look,1-Math.exp(-6*dt));}camera.lookAt(camLook);
+  /* stops */
+  var near=-1;STOPS.forEach(function(s,i){var d=Math.hypot(s.p.x-pos.x,s.p.z-pos.z);if(d<9)near=i;
+    var vis=visited.has(i);s.ring.material.color.setHex(vis?0x0E6B80:0xF2B33D);s.ring.scale.setScalar(vis?1:1+Math.sin(elapsed*3+i)*0.05);
+    if(s.label)s.label.position.y=s.labelPos.y+Math.sin(elapsed*1.6+i)*0.25;});
+  if(started&&near!==active){active=near;if(near>=0){visited.add(near);if(closedFor!==near)showCard(near);}else{card.hidden=true;closedFor=-1;}updateNav();}
+  /* next stop guide */
+  var next=-1;for(var j=0;j<STOPS.length;j++){if(!visited.has(j)){next=j;break;}}
+  if(started){var nb=document.getElementById('nextbox');
+    if(next<0){document.getElementById('nextName').textContent='Route complete';document.getElementById('nextDist').textContent='Thanks for riding';document.getElementById('arrow').style.visibility='hidden';}
+    else{var s=STOPS[next];document.getElementById('nextName').textContent=(next+1)+' · '+s.name;var dx=s.p.x-pos.x,dz=s.p.z-pos.z;
+      document.getElementById('nextDist').textContent=Math.round(Math.hypot(dx,dz)*4)+' m';var rel=Math.atan2(dx,dz)-heading;rel=Math.atan2(Math.sin(rel),Math.cos(rel));
+      document.getElementById('arrow').style.transform='rotate('+(-rel*180/Math.PI)+'deg)';document.getElementById('arrow').style.visibility='visible';}}
+  waves.forEach(function(wv,k){wv.position.x+=dt*(1+k%3*0.4);if(wv.position.x>160)wv.position.x=-160;});
+  lamp.material.emissive.setHex(Math.sin(elapsed*2)>0.6?0xC09030:0x806020);
+  renderer.render(scene,camera);requestAnimationFrame(frame);}
+updateNav();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

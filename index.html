@@ -46,6 +46,16 @@ h4{font:600 18px/1.3 var(--body);margin:0}
 .entries{display:flex;flex-direction:column}
 .entry{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;padding:16px 0;border-top:1px solid var(--rule)}
 .entry:first-child{border-top:0}
+.routemap{position:relative;padding-left:36px}
+.routemap::before{content:"";position:absolute;left:9px;top:26px;bottom:26px;width:4px;border-radius:2px;background:var(--line)}
+.routemap .entry{position:relative;border-top:0}
+.routemap .entry::before{content:"";position:absolute;left:-33px;top:22px;width:16px;height:16px;border-radius:50%;background:var(--surface);border:3px solid var(--line);box-sizing:border-box}
+.routemap > .entry:first-child::before{background:var(--line);box-shadow:0 0 0 5px var(--line-soft)}
+.routemap > .entry:first-child .when::after{content:"Current stop";display:block;font:500 10px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--line)}
+a.cta{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);text-decoration:none;font:600 16px/1 var(--body);padding:14px 18px;border-radius:8px}
+a.cta:hover{background:var(--line)}
+a.cta:focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+a.cta span{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--signal)}
 .when{font:400 13px/1.6 var(--mono);color:var(--muted);margin:2px 0 0;font-variant-numeric:tabular-nums}
 .entry-body{display:flex;flex-direction:column;gap:2px;min-width:0}
 .place{margin:0;color:var(--line);font-weight:600;font-size:15px}
@@ -504,10 +514,10 @@ function render(){
   ]);
   var cases=get('cases')||[];
   var main=h('main','',[
-    section('about','About',[txt('p','lead','about.headline'),txt('p','prose','about.intro'),txt('p','prose','about.goals')]),
+    section('about','About',[txt('p','lead','about.headline'),txt('p','prose','about.intro'),txt('p','prose','about.goals'),(function(){var a=h('a','cta');a.href='https://mathurabhishek-12.github.io/abhimathur.github.io/drive.html';var k=h('span');k.textContent='New';a.append(k,document.createTextNode('Ride the bus: take the interactive tour'));return a;})()]),
     section('credentials','Credentials',[
       sub('Education'),list('education','entries',entry,TPL.entry,'Add education'),
-      sub('Experience'),list('experience','entries',entry,TPL.entry,'Add role'),
+      sub('Experience · route map'),list('experience','entries routemap',entry,TPL.entry,'Add role'),
       sub('Certifications and training'),list('certs','entries',entry,TPL.entry,'Add certification')]),
     section('skills','Skills and evidence',[
       h('div','',[ (function(){var hd=h('div','skills-head');var a=h('span');a.textContent='Skill';var b=h('span');b.textContent='Evidence';hd.append(a,b);return hd;})() ]),
